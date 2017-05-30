@@ -615,11 +615,22 @@ qx.Class.define("qx.event.handler.DragDrop",
 
       // find current hovered droppable
       var el = e.getTarget();
+      if (this.__startConfig.target === el) {
+        // on touch devices the native events return wrong elements as target (its always the element where the dragging started)
+        el = e.getNativeEvent().view.document.elementFromPoint(e.getDocumentLeft(), e.getDocumentTop());
+      }
       var cursor = this.getCursor();
       if (!cursor) {
         cursor = qx.ui.core.DragDropCursor.getInstance();
       }
       var cursorEl = cursor.getContentElement().getDomElement();
+      if (cursorEl && (el === cursorEl || cursorEl.contains(el))) {
+        var display = qx.bom.element.Style.get(cursorEl, "display");
+        // get the cursor out of the way
+        qx.bom.element.Style.set(cursorEl, "display", "none");
+        el = e.getNativeEvent().view.document.elementFromPoint(e.getDocumentLeft(), e.getDocumentTop());
+        qx.bom.element.Style.set(cursorEl, "display", display);
+      }
 
       if (el !== cursorEl) {
         var droppable = this.__findDroppable(el);
