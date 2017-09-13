@@ -179,6 +179,7 @@ qx.Class.define("qx.ui.form.core.VirtualDropDownList",
           control = new qx.ui.list.List().set({
             focusable: false,
             keepFocus: true,
+            keepActive: true,
             height: null,
             width: null,
             maxHeight: this._target.getMaxListHeight(),
@@ -189,6 +190,7 @@ qx.Class.define("qx.ui.form.core.VirtualDropDownList",
           control.getSelection().addListener("change", this._onListChangeSelection, this);
           control.addListener("tap", this._handlePointer, this);
           control.addListener("changeModel", this._onChangeModel, this);
+          control.addListener("changeModelLength", this.__adjustHeight, this);
           control.addListener("changeDelegate", this._onChangeDelegate, this);
 
           this.add(control, {flex: 1});
@@ -409,6 +411,11 @@ qx.Class.define("qx.ui.form.core.VirtualDropDownList",
      */
     __adjustSize : function()
     {
+      if (!this._target.getBounds()) {
+        this.addListenerOnce("appear", this.__adjustSize, this);
+        return;
+      }
+
       this.__adjustWidth();
       this.__adjustHeight();
     },
