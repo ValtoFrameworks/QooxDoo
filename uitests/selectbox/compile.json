@@ -2,28 +2,29 @@
   "targets": [
     {
       "type": "source",
-      "outputPath": "source-nopromise-output"
+      "outputPath": "output/source"
     },
     {
       "type": "build",
-      "outputPath": "build-nopromise-output",
+      "outputPath": "output/build",
       "addCreatedAt": true
     }
   ],
   "defaultTarget": "source",
   "locales": [ "en" ],
-  "environment": {
-    "qx.promise": false
-  },
 
   "applications": [
     {
-      "class": "uitests.DragAndDropNoPromiseApplication",
+      "class": "selectbox.Application",
       "theme": "qx.theme.Simple",
-      "name": "dragndrop"
+      "name": "selectbox"
+    },
+    {
+      "class": "selectbox.Issue9569Application",
+      "theme": "qx.theme.Simple",
+      "name": "issue-9569"
     }
   ],
-
   "libraries": [
     "../../framework",
     "."
